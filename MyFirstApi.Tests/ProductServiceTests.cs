@@ -2,6 +2,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyFirstApi.Services;
 using MyFirstApi.Models;
 using System.Linq;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 
 namespace MyFirstApi.Tests
 {
@@ -13,7 +15,9 @@ namespace MyFirstApi.Tests
         [TestInitialize]
         public void Setup()
         {
-            _service = new ProductService();
+            var options = new Microsoft.Extensions.Options.OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions());
+            var cache = new MemoryCache(options);
+            _service = new ProductService(cache);
         }
 
         [TestMethod]
